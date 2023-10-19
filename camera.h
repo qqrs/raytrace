@@ -90,7 +90,7 @@ class camera {
             return color(0, 0, 0);
 
         if (world.hit(r, interval(0.001, infinity), rec)) {
-            vec3 scatter_dir = random_on_hemisphere(rec.normal);
+            vec3 scatter_dir = rec.normal + random_unit_vector();
             return 0.5 * ray_color(ray(rec.p, scatter_dir), depth-1, world);
         }
 
