@@ -8,7 +8,7 @@ class sphere : public hittable {
     public:
         sphere(point3 _center, double _radius) : center(_center), radius(_radius) {}
 
-        virtual bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
+        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             vec3 oc = r.origin() - center;
             auto a = r.direction().length_squared();
             auto half_b = dot(oc, r.direction());
@@ -20,9 +20,9 @@ class sphere : public hittable {
 
             auto sqrtd = sqrt(discriminant);
             double t = (-half_b - sqrtd) / a;
-            if (t <= ray_tmin || t > ray_tmax) {
+            if (!ray_t.surrounds(t)) {
                 t = (-half_b + sqrtd) / a;
-                if (t <= ray_tmin || t > ray_tmax) {
+                if (!ray_t.surrounds(t)) {
                     return false;
                 }
             }

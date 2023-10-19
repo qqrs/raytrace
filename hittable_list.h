@@ -22,14 +22,14 @@ class hittable_list : public hittable {
             objects.push_back(object);
         }
 
-        virtual bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
+        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             hit_record temp_rec;
             bool hit_anything = false;
-            auto closest_so_far = ray_tmax;
+            auto closest_so_far = ray_t.max;
             bool is_hit;
 
             for (const auto& object : objects) {
-                is_hit = object->hit(r, ray_tmin, closest_so_far, temp_rec);
+                is_hit = object->hit(r, interval(ray_t.min, closest_so_far), temp_rec);
                 if (!is_hit)
                     continue;
 
